@@ -12,6 +12,7 @@ class RidePrefForm extends StatefulWidget {
   final RidePref? initRidePref;
 
   const RidePrefForm({super.key, this.initRidePref});
+
   @override
   State<RidePrefForm> createState() => _RidePrefFormState();
 }
@@ -39,10 +40,10 @@ class _RidePrefFormState extends State<RidePrefForm> {
     setState(() {
       filteredLocations = []; // Reset list
     });
-    showDialog(
-      context: context,
-      builder: (context) {
-        return StatefulBuilder(
+    Navigator.push(
+      context,
+      AnimationUtils.createBottomToTopRoute(
+        StatefulBuilder(
           builder: (context, setDialogState) {
             return Scaffold(
               appBar: AppBar(
@@ -110,8 +111,8 @@ class _RidePrefFormState extends State<RidePrefForm> {
                     ),
             );
           },
-        );
-      },
+        ),
+      ),
     );
   }
 
@@ -141,7 +142,7 @@ class _RidePrefFormState extends State<RidePrefForm> {
           onPressed: _swapLocations,
         ),
         BlaInput(
-          labelText: arrival?.name ?? 'Going To',
+          labelText: arrival?.name ?? 'Going to',
           iconForm: Icons.circle_outlined,
           onTap: () => _openFullScreenDialog(context, (location) {
             setState(() {
@@ -155,7 +156,7 @@ class _RidePrefFormState extends State<RidePrefForm> {
           onTap: () => print('you tapped'),
         ),
         BlaInput(
-          labelText: requestedSeats.toString(),
+          labelText: '1',
           iconForm: Icons.person,
           onTap: () => print('you tapped'),
         ),
