@@ -32,7 +32,7 @@ class BlaButton extends StatelessWidget {
         foregroundColor: BlaColors.primary, backgroundColor: BlaColors.white,
         side: BorderSide(color: BlaColors.primary, width: 1),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(32flutt),
+          borderRadius: BorderRadius.circular(32),
         ),
       ),
     );

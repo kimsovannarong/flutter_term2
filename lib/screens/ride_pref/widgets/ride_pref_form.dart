@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
- 
+import 'package:week_3_blabla_project/dummy_data/dummy_data.dart';
+import 'package:week_3_blabla_project/theme/theme.dart';
+import 'package:week_3_blabla_project/widgets/actions/bla_button.dart';
+import 'package:week_3_blabla_project/widgets/inputs/bla_input.dart';
+
 import '../../../model/ride/locations.dart';
 import '../../../model/ride_pref/ride_pref.dart';
- 
-///
-/// A Ride Preference From is a view to select:
-///   - A depcarture location
-///   - An arrival location
-///   - A date
-///   - A number of seats
-///
-/// The form can be created with an existing RidePref (optional).
-///
+
 class RidePrefForm extends StatefulWidget {
-  // The form can be created with an optional initial RidePref.
   final RidePref? initRidePref;
 
   const RidePrefForm({super.key, this.initRidePref});
@@ -28,38 +22,44 @@ class _RidePrefFormState extends State<RidePrefForm> {
   Location? arrival;
   late int requestedSeats;
 
-
-
-  // ----------------------------------
-  // Initialize the Form attributes
-  // ----------------------------------
-
   @override
   void initState() {
     super.initState();
-    // TODO 
+     //TODO: 
   }
-
-  // ----------------------------------
-  // Handle events
-  // ----------------------------------
- 
-
-  // ----------------------------------
-  // Compute the widgets rendering
-  // ----------------------------------
   
-
-  // ----------------------------------
-  // Build the widgets
-  // ----------------------------------
   @override
   Widget build(BuildContext context) {
     return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [ 
- 
-        ]);
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        BlaInput(
+          labelText: 'From',
+          iconForm: Icons.circle_outlined,
+          onTap: () => print('you tapped'),
+          iconSwitching: Icons.swap_vert,
+        ),
+        BlaInput(
+          labelText: 'Going to',
+          iconForm: Icons.circle_outlined,
+          onTap: () => print('you tapped'),
+        ),
+        BlaInput(
+          labelText: 'Departure date',
+          iconForm: Icons.date_range_sharp,
+          onTap: () => print('you tapped'),
+        ),
+        BlaInput(
+          labelText: '1',
+          iconForm: Icons.person,
+          onTap: () => print('you tapped'),
+        ),
+        BlaButton(
+          text: 'Search',
+          onPressed: () => print('you searched'),
+        ),
+      ],
+    );
   }
 }
