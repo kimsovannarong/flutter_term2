@@ -5,10 +5,12 @@ import 'package:week_3_blabla_project/theme/theme.dart';
 class TestScreen extends StatelessWidget {
   final Location? departure;
   final Location? arrival;
+  final int seatCount;
   TestScreen(
       {super.key,
       required this.departure,
       required this.arrival,
+      required this.seatCount
       });
 
   @override
@@ -47,7 +49,7 @@ class TestScreen extends StatelessWidget {
                     Text('Departure: ${departure?? 'Not selected'}'),
                     Text('Arrival: ${arrival ?? 'Not selected'}'),
                     Text('Departure: Today'),
-                    Text('Requested Seats: 1'),
+                    Text('Requested Seats: ${seatCount??'Not selected'}'),
                   ],
                 ),
               ),

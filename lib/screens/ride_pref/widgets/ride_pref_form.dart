@@ -33,7 +33,7 @@ class _RidePrefFormState extends State<RidePrefForm> {
     departure = widget.initRidePref?.departure;
     departureDate = widget.initRidePref?.departureDate ?? DateTime.now();
     arrival = widget.initRidePref?.arrival;
-    requestedSeats = widget.initRidePref?.requestedSeats ?? 1;
+    requestedSeats = widget.initRidePref!.requestedSeats;
     filteredLocations = [];
   }
 
@@ -58,9 +58,7 @@ class _RidePrefFormState extends State<RidePrefForm> {
                   onChanged: (text) {
                     setDialogState(() {
                       filteredLocations = fakeLocations
-                          .where((location) => location.name
-                              .toLowerCase()
-                              .contains(text.toLowerCase()))
+                          .where((location) => location.name.toLowerCase().contains(text.toLowerCase()))
                           .toList();
                     });
                   },
@@ -86,27 +84,17 @@ class _RidePrefFormState extends State<RidePrefForm> {
                   : ListView.builder(
                       itemCount: filteredLocations.length,
                       itemBuilder: (context, index) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: BlaColors.greyLight,
-                                width: 1,
-                              ),
-                            ),
-                          ),
-                          child: ListTile(
-                            leading: Icon(Icons.location_on, color: BlaColors.neutralLight, size: 20),
-                            title: Text(filteredLocations[index].name),
-                            subtitle: Text(filteredLocations[index].country.name),
-                            trailing: Icon(Icons.arrow_forward_ios, color: BlaColors.neutralLight, size: 16),
-                            onTap: () {
-                              Navigator.of(context).pop();
-                              setState(() {
-                                onLocationSelected(filteredLocations[index]);
-                              });
-                            },
-                          ),
+                        return ListTile(
+                          leading: Icon(Icons.location_on, color: BlaColors.neutralLight, size: 20),
+                          title: Text(filteredLocations[index].name),
+                          subtitle: Text(filteredLocations[index].country.name),
+                          trailing: Icon(Icons.arrow_forward_ios, color: BlaColors.neutralLight, size: 16),
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            setState(() {
+                              onLocationSelected(filteredLocations[index]);
+                            });
+                          },
                         );
                       },
                     ),
@@ -117,7 +105,6 @@ class _RidePrefFormState extends State<RidePrefForm> {
     );
   }
 
-  // Function to swap the departure and arrival locations
   void _swapLocations() {
     setState(() {
       final temp = departure;
@@ -126,50 +113,88 @@ class _RidePrefFormState extends State<RidePrefForm> {
     });
   }
 
+  void _showNumberSpinnerDialog(BuildContext context) {
+    Navigator.push(
+      context,
+      AnimationUtils.createBottomToTopRoute(
+        StatefulBuilder(
+          builder: (context, setDialogState) {
+            int seatCount = requestedSeats;
+            return Scaffold(
+              backgroundColor: BlaColors.white,
+              appBar: AppBar(
+                backgroundColor: BlaColors.white,
+                leading: IconButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: Icon(Icons.close, color: BlaColors.neutralLight),
+                ),
+                title: Text('Select Number of Seats', style: TextStyle(color: BlaColors.neutralDark)),
+              ),
+              body: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(height: 20),
+                  Text("Number of seats to book", style: TextStyle(color: BlaColors.neutralDark, fontSize: 20, fontWeight: FontWeight.bold)),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.remove_circle_outline, color: BlaColors.neutralLight, size: 40),
+                        onPressed: () {
+                          if (seatCount > 1) {
+                            setDialogState(() {
+                              seatCount--;
+                            });
+                          }
+                        },
+                      ),
+                      SizedBox(width: 20),
+                      Text('$seatCount', style: TextStyle(color: BlaColors.neutralDark, fontSize: 50, fontWeight: FontWeight.bold)),
+                      SizedBox(width: 20),
+                      IconButton(
+                        icon: Icon(Icons.add_circle_outline, color: BlaColors.primary, size: 40),
+                        onPressed: () {
+                          if (seatCount < 10) {
+                            setDialogState(() {
+                              seatCount++;
+                            });
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+                    onPressed: () {
+                      setState(() {
+                        requestedSeats = seatCount;
+                      });
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("Confirm", style: TextStyle(color: Colors.white, fontSize: 18)),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
-
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          BlaInput(
-            labelText: departure?.name ?? 'From',
-            iconForm: Icons.circle_outlined,
-            onTap: () => _openFullScreenDialog(context, (location) {
-              setState(() {
-                departure = location;
-              });
-            }),
-            iconSwitching: Icons.swap_vert,
-            onPressed: _swapLocations,
-          ),
-          BlaInput(
-            labelText: arrival?.name ?? 'Going to',
-            iconForm: Icons.circle_outlined,
-            onTap: () => _openFullScreenDialog(context, (location) {
-              setState(() {
-                arrival = location;
-              });
-            }),
-          ),
-          BlaInput(
-            labelText: 'Departure date',
-            iconForm: Icons.date_range_sharp,
-            onTap: () => print('you tapped'),
-          ),
-          BlaInput(
-            labelText: '1',
-            iconForm: Icons.person,
-            onTap: () => print('you tapped'),
-          ),
-          BlaButton(
-            text: 'Search',
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TestScreen(
-              departure: departure,
-              arrival: arrival,
-            ))),
-          ),
+          BlaInput(labelText: departure?.name ?? 'From', iconForm: Icons.circle_outlined, onTap: () => _openFullScreenDialog(context, (location) { setState(() { departure = location; }); }), iconSwitching: Icons.swap_vert, onPressed: _swapLocations),
+          BlaInput(labelText: arrival?.name ?? 'Going to', iconForm: Icons.circle_outlined, onTap: () => _openFullScreenDialog(context, (location) { setState(() { arrival = location; }); })),
+          BlaInput(labelText: 'Departure date', iconForm: Icons.date_range_sharp, onTap: () => print('you tapped')),
+          BlaInput(labelText: '$requestedSeats', iconForm: Icons.person, onTap: () => _showNumberSpinnerDialog(context)),
+          BlaButton(text: 'Search', onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TestScreen(departure: departure, arrival: arrival, seatCount: requestedSeats)))),
         ],
       ),
     );
