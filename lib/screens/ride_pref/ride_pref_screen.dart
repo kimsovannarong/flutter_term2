@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:week_3_blabla_project/widgets/actions/bla_button.dart';
 
 import '../../model/ride_pref/ride_pref.dart';
 import '../../service/ride_prefs_service.dart';
@@ -57,16 +58,10 @@ class _RidePrefScreenState extends State<RidePrefScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
 
-
-
                   // 2.1 Display the Form to input the ride preferences
                   RidePrefForm(initRidePref: RidePrefService.currentRidePref,),
                   SizedBox(height: BlaSpacings.m),
-
-
-
-
-
+  
                   // 2.2 Optionally display a list of past preferences
                   SizedBox(
                     height: 200, // Set a fixed height
