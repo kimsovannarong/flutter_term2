@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:week_3_blabla_project/dummy_data/dummy_data.dart';
+import 'package:week_3_blabla_project/screens/ride_pref/test_screen.dart';
 import 'package:week_3_blabla_project/theme/theme.dart';
 import 'package:week_3_blabla_project/widgets/actions/bla_button.dart';
 import 'package:week_3_blabla_project/widgets/inputs/bla_input.dart';
@@ -127,44 +128,50 @@ class _RidePrefFormState extends State<RidePrefForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        BlaInput(
-          labelText: departure?.name ?? 'From',
-          iconForm: Icons.circle_outlined,
-          onTap: () => _openFullScreenDialog(context, (location) {
-            setState(() {
-              departure = location;
-            });
-          }),
-          iconSwitching: Icons.swap_vert,
-          onPressed: _swapLocations,
-        ),
-        BlaInput(
-          labelText: arrival?.name ?? 'Going to',
-          iconForm: Icons.circle_outlined,
-          onTap: () => _openFullScreenDialog(context, (location) {
-            setState(() {
-              arrival = location;
-            });
-          }),
-        ),
-        BlaInput(
-          labelText: 'Departure date',
-          iconForm: Icons.date_range_sharp,
-          onTap: () => print('you tapped'),
-        ),
-        BlaInput(
-          labelText: '1',
-          iconForm: Icons.person,
-          onTap: () => print('you tapped'),
-        ),
-        BlaButton(
-          text: 'Search',
-          onPressed: () => print('you searched'),
-        ),
-      ],
+    return Form(
+
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          BlaInput(
+            labelText: departure?.name ?? 'From',
+            iconForm: Icons.circle_outlined,
+            onTap: () => _openFullScreenDialog(context, (location) {
+              setState(() {
+                departure = location;
+              });
+            }),
+            iconSwitching: Icons.swap_vert,
+            onPressed: _swapLocations,
+          ),
+          BlaInput(
+            labelText: arrival?.name ?? 'Going to',
+            iconForm: Icons.circle_outlined,
+            onTap: () => _openFullScreenDialog(context, (location) {
+              setState(() {
+                arrival = location;
+              });
+            }),
+          ),
+          BlaInput(
+            labelText: 'Departure date',
+            iconForm: Icons.date_range_sharp,
+            onTap: () => print('you tapped'),
+          ),
+          BlaInput(
+            labelText: '1',
+            iconForm: Icons.person,
+            onTap: () => print('you tapped'),
+          ),
+          BlaButton(
+            text: 'Search',
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TestScreen(
+              departure: departure,
+              arrival: arrival,
+            ))),
+          ),
+        ],
+      ),
     );
   }
 }
