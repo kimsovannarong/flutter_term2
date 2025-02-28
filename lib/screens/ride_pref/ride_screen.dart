@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:week_3_blabla_project/model/ride/locations.dart';
 import 'package:week_3_blabla_project/theme/theme.dart';
 
-class TestScreen extends StatelessWidget {
+class RideScreen extends StatelessWidget {
   final Location? departure;
   final Location? arrival;
+  final String date;
   final int seatCount;
-  TestScreen(
+  RideScreen(
       {super.key,
       required this.departure,
       required this.arrival,
+      required this.date,
       required this.seatCount
       });
 
@@ -48,7 +50,7 @@ class TestScreen extends StatelessWidget {
                   children: [
                     Text('Departure: ${departure?? 'Not selected'}'),
                     Text('Arrival: ${arrival ?? 'Not selected'}'),
-                    Text('Departure: Today'),
+                    Text('Departure: ${date}'),
                     Text('Requested Seats: ${seatCount??'Not selected'}'),
                   ],
                 ),
